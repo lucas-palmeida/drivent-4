@@ -23,6 +23,18 @@ async function createBooking(userId: number, roomId: number) {
     return booking;
 };
 
+async function updateBooking(userId: number, roomId: number, bookingId: number) {
+    const verifyBooking = await bookingRepository.getBooking(userId);
+    if(!verifyBooking) throw forbiddenError("User doesn't have a booking yet.");
+
+    await verifyTicketByUserId(userId);
+    await verifyRoomAndCapacity(roomId);
+
+    const booking = await bookingRepository.updateBooking(bookingId, roomId);
+
+    return booking;
+}
+
 async function verifyTicketByUserId(userId: number) {
     const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
     if(!enrollment) throw notFoundError();
@@ -32,7 +44,7 @@ async function verifyTicketByUserId(userId: number) {
 
     const { isRemote, includesHotel } = ticket.TicketType;
     if(isRemote || !includesHotel || ticket.status !== TicketStatus.PAID) throw forbiddenError("Verify your ticket data.");
-}
+};
 
 async function verifyRoomAndCapacity(roomId: number) {
     const room = await roomRepository.getRoomById(roomId);
@@ -40,11 +52,12 @@ async function verifyRoomAndCapacity(roomId: number) {
 
     const bookings = await bookingRepository.getBookingsByRoomId(roomId);
     if(bookings.length === room.capacity) throw forbiddenError("The room is already full.");
-}
+};
 
 const bookingService = {
     getBooking,
     createBooking,
+    updateBooking,
 };
 
 export default bookingService;
