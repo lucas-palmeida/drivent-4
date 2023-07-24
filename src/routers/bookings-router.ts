@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createBooking, getBooking, updateBooking } from "@/controllers/bookings-controller";
+import { createBooking, getBooking, updateBooking } from "@/controllers/booking-controller";
 import { authenticateToken, validateBody } from "@/middlewares";
 import { bookingSchema } from "@/schemas/bookings-schemas";
 

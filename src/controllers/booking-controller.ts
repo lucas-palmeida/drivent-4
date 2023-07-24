@@ -1,6 +1,6 @@
 import { AuthenticatedRequest } from "@/middlewares";
 import { InputBookingBody } from "@/protocols";
-import bookingService from "@/services/bookings-service";
+import bookingService from "@/services/booking-service";
 import { Response } from "express";
 import httpStatus from "http-status";
 

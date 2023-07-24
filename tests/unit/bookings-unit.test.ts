@@ -1,13 +1,9 @@
 import bookingRepository from "@/repositories/booking-repository";
-import bookingService from "@/services/bookings-service";
-import { Booking, Room, Ticket, TicketType, User } from "@prisma/client";
-import { buildBookingRepoReturn, buildBookingServReturn, buildCreateBookingReturn } from "../factories/bookings-factory";
+import bookingService from "@/services/booking-service";
+import { Booking, Room } from "@prisma/client";
+import { buildBookingRepoReturn, buildBookingServReturn } from "../factories/bookings-factory";
 import { BookingParams } from "@/protocols";
 import { notFoundError } from "@/errors";
-import { buildTicketInputPaid, buildTicketTypeInput, buildUserInput } from "../factories";
-import { buildRoomInput } from "../factories/rooms-factory";
-import enrollmentRepository from "@/repositories/enrollment-repository";
-import ticketsRepository from "@/repositories/tickets-repository";
 
 describe('Bookings Service Unit Tests', () => {
     
