@@ -63,6 +63,8 @@ const bookingService = {
     getBooking,
     createBooking,
     updateBooking,
+    verifyTicketByUserId,
+    verifyRoomAndCapacity,
 };
 
 export default bookingService;

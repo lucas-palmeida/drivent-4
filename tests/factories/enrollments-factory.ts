@@ -40,4 +40,18 @@ export function createhAddressWithCEP() {
     cidade: 'São Paulo',
     uf: 'SP',
   };
-}
+};
+
+export function buildEnrollmentInput(mockUser: User) {
+  return {
+    id: faker.datatype.number({min: 0, max: 99}),
+    name: faker.name.findName(),
+    cpf: generateCPF(),
+    birthday: faker.date.past(),
+    phone: faker.phone.phoneNumber('(##) 9####-####'),
+    userId: mockUser.id,
+    Address: {},
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }
+};
