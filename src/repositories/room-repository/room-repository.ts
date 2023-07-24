@@ -1,8 +1,10 @@
 import { prisma } from "@/config";
 
-async function getRoomById(id: number) {
+async function getRoomById(roomId: number) {
     return prisma.room.findFirst({
-        where: { id },
+        where: { 
+            id: roomId,
+        },
     });
 };
 

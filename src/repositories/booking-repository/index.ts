@@ -10,9 +10,7 @@ async function getBooking(userId: number) {
 };
 
 async function getBookingsByRoomId(roomId: number) {
-    return prisma.booking.findMany({
-        where: { roomId },
-    });
+    return prisma.booking.count();
 };
 
 async function createBooking(userId: number, roomId: number) {

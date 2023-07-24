@@ -1,17 +1,23 @@
 import { notFoundError } from "@/errors";
 import { forbiddenError } from "@/errors/forbidden-error";
+import { BookingParams } from "@/protocols";
 import bookingRepository from "@/repositories/booking-repository";
 import enrollmentRepository from "@/repositories/enrollment-repository";
 import roomRepository from "@/repositories/room-repository/room-repository";
 import ticketsRepository from "@/repositories/tickets-repository";
-import { Booking, TicketStatus } from "@prisma/client";
+import { TicketStatus } from "@prisma/client";
 
-async function getBooking(userId: number): Promise<Booking> {
+async function getBooking(userId: number): Promise<BookingParams> {
     const booking = await bookingRepository.getBooking(userId);
     
     if(!booking) throw notFoundError();
 
-    return booking;
+    const bookingData: BookingParams = {
+        id: booking.id,
+        Room: booking.Room,
+    };
+
+    return bookingData;
 };
 
 async function createBooking(userId: number, roomId: number) {
@@ -27,7 +33,6 @@ async function updateBooking(userId: number, roomId: number, bookingId: number) 
     const verifyBooking = await bookingRepository.getBooking(userId);
     if(!verifyBooking) throw forbiddenError("User doesn't have a booking yet.");
 
-    await verifyTicketByUserId(userId);
     await verifyRoomAndCapacity(roomId);
 
     const booking = await bookingRepository.updateBooking(bookingId, roomId);
@@ -50,8 +55,8 @@ async function verifyRoomAndCapacity(roomId: number) {
     const room = await roomRepository.getRoomById(roomId);
     if(!room) throw notFoundError();
 
-    const bookings = await bookingRepository.getBookingsByRoomId(roomId);
-    if(bookings.length === room.capacity) throw forbiddenError("The room is already full.");
+    const bookings = await bookingRepository.getBookingsByRoomId(room.id);
+    if(bookings >= room.capacity) throw forbiddenError("The room is already full.");
 };
 
 const bookingService = {
